@@ -1,8 +1,4 @@
-# cognixus_assessment
-
-This repo is soley for completing the home assessment provided by Cognixus Technologies Sdn Bhd as part of the interview process.
-
-# Steps
+# Test
 ## CREATE Docker Network
 - ```docker network create --driver=bridge --subnet=182.1.0.1/16 cognixus_network```
 
