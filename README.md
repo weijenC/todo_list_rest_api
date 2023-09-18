@@ -11,10 +11,6 @@ This repo is soley for completing the home assessment provided by Cognixus Techn
 
 
 # To bring up container
-## Build image if image not available in dockerhub
-- ```docker build -t cognixus-mysql -f Dockerfile-mysql .```
-- ```docker build -t cognixus-app -f Dockerfile-app .```
-
 ## Docker Compose to start all containers and sevices
 - ```docker-compose up```
 
@@ -38,6 +34,14 @@ This repo is soley for completing the home assessment provided by Cognixus Techn
 
 
 # Others
+## To manual build image
+- ```docker build -t cognixus-app-mysql -f Dockerfile-mysql .```
+- ```docker build -t cognixus-app-app -f Dockerfile-app .```
+
+## To manual start container from image
+- ```docker run -itd --name=cognixus-mysql-container --net=cognixus-app_cognixus_network --ip 182.1.0.10 -p 3306:3306 cognixus-app-mysql```
+- ```docker run -itd --name=cognixus-app-container --net=cognixus-app_cognixus_network --ip 182.1.0.11 -p 3000:3000 cognixus-app-mysql```
+
 ## To access database
 - ```mysql -h 182.1.0.10 -u root -p'rootpassword123#' -D cognixus```
 
@@ -52,7 +56,7 @@ This repo is soley for completing the home assessment provided by Cognixus Techn
 
 
 
-# Development Note
+# Development Note (ARCHIVED)
 ## CREATE Docker Network
 - ```docker network create --driver=bridge --subnet=182.1.0.1/16 cognixus_network```
 
