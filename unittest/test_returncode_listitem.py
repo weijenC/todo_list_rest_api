@@ -4,7 +4,7 @@ import requests
 endpoint_url="http://localhost:3000/list-all-item"
 basic_header={'Content-Type': 'application/json'}
 request_timeout=10
-todo_user="unittest_returncode_listitem"
+todo_user="unittest_returncode"
 todo_item="buy apple"
 
 def test_listitem_200():

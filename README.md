@@ -1,14 +1,63 @@
 # cognixus_assessment
-
 This repo is soley for completing the home assessment provided by Cognixus Technologies Sdn Bhd as part of the interview process.
 
-# Steps
+
+# Pending item to work on
+1. Solve network issue where local host machine can't access docker container bridge network.
+    > Solve this to access web documentation at http://127.0.0.1:3000/docs and API schema in JSON format at http://127.0.0.1:3000/openapi.json
+2. Publish docker images to dockerhub.
+3. Sign in to the API using gmail or github.
+4. Database indexing on frequently accessed fields.
+
+
+# To bring up container
+## Build image if image not available in dockerhub
+- ```docker build -t cognixus-mysql -f Dockerfile-mysql .```
+- ```docker build -t cognixus-app -f Dockerfile-app .```
+
+## Docker Compose to start all containers and sevices
+- ```docker-compose up```
+
+## Check if containers are running, there should have 2 containers named cognixus-app-container and cognixus-mysql-container
+- ```docker ps```
+
+## Get into cognixus-app-container container and execute curl command to call web service
+- ```docker exec -it cognixus-app-container /bin/bash```
+- ```curl -X POST -H 'Content-Type: application/json' http://localhost:3000/add-item --data '{"request_id": "commit1", "user": "weijen", "item": "service car"}'```
+- ```curl -X POST -H 'Content-Type: application/json' http://localhost:3000/list-all-item --data '{"request_id": "commit1", "user": "weijen"}'```
+- ```curl -X POST -H 'Content-Type: application/json' http://localhost:3000/mark-item --data '{"request_id": "commit1", "user": "weijen", "item": "service car"}'```
+- ```curl -X POST -H 'Content-Type: application/json' http://localhost:3000/delete-item --data '{"request_id": "commit1", "user": "weijen", "item": "service car"}'```
+
+## Run unit test
+- ```docker exec -it cognixus-app-container /bin/bash```
+- ```cd unittest/```
+- ```python3 -m pytest -s test_returncode_additem.py -vv```
+- ```python3 -m pytest -s test_returncode_listitem.py -vv```
+- ```python3 -m pytest -s test_returncode_markitem.py -vv```
+- ```python3 -m pytest -s test_returncode_deleteitem.py -vv```
+
+
+# Others
+## To access database
+- ```mysql -h 182.1.0.10 -u root -p'rootpassword123#' -D cognixus```
+
+## To access Interactive Web Documentation
+- http://127.0.0.1:3000/docs#/
+
+## To extract API JSON Schema
+- http://127.0.0.1:3000/openapi.json
+
+
+
+
+
+
+# Development Note
 ## CREATE Docker Network
 - ```docker network create --driver=bridge --subnet=182.1.0.1/16 cognixus_network```
 
 ## CREATE Docker DB Volume
 - ```docker volume create cognixus_db_data```
-
 
 ## CREATE Docker MySQL Container
 - ```docker run -itd -v cognixus_db_data:/data -e MYSQL_ROOT_PASSWORD=rootpassword123# --name=cognixus-db --net=cognixus_network -p 3306:3306 mysql```
@@ -67,43 +116,3 @@ create table todolist (
 - ```python3 -m pytest -s test_returncode_listitem.py -vv```
 - ```python3 -m pytest -s test_returncode_markitem.py -vv```
 - ```python3 -m pytest -s test_returncode_deleteitem.py -vv```
-
-
-
-## Starting Container
-1. Start docker desktop
-2. ```docker ps -a```
-3. ```docker start [CONTAINER_ID]```
-
-
-
-```docker network create --driver=bridge --subnet=182.1.0.1/16 cognixus_network```
-
-```docker build -t cognixus-mysql -f Dockerfile-mysql .```
-```docker run -itd --name=cognixus-db2 --net=cognixus_network --ip 182.1.0.10 -p 3306:3306 cognixus-mysql```
-
-```docker build -t cognixus-app -f Dockerfile-app .```
-```docker run -itd --name=cognixus-app2 --net=cognixus_network --ip 182.1.0.11 -p 3000:3000 cognixus-app```
-
-
-## Interactive Web Documentation
-- http://127.0.0.1:3000/docs#/
-
-## API JSON Schema
-- http://127.0.0.1:3000/openapi.json
-
-
-
-
-
-# Others
-- ```mysql -h 182.1.0.2 -u root -p'rootpassword123#'```
-
-
-
-
-
-# Restart Service Command (required after updating table or source file)
-1. ```bash serve_gunicorn.sh stop```
-2. ```bash serve_gunicorn.sh start```
-3. ```ps aux | grep apws_main``` (to check if service started)
