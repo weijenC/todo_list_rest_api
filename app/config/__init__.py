@@ -2,7 +2,7 @@ import configparser
 
 
 config = configparser.ConfigParser()
-config.read("/opt/config/cognixus_app.ini")
+config.read("/opt/program/cognixus-app/cognixus_app.ini")
 
 # Program
 base_path = config["program"]["base_path"]

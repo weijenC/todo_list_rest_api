@@ -1,0 +1,50 @@
+FROM ubuntu:latest
+
+# Keeps Python from generating .pyc files in the container
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# Turns off buffering for easier container logging
+ENV PYTHONUNBUFFERED=1
+
+# Switch to root user to ensure permissions
+USER root
+
+# Install apt packages & dependencies
+RUN apt-get update -y
+RUN apt-get install -y iputils-ping
+RUN apt-get install -y telnet
+RUN apt-get install -y curl
+RUN apt-get install -y mysql-client
+RUN apt-get install -y vim
+RUN apt-get install -y dos2unix
+RUN apt-get install -y python3
+RUN apt-get install -y python3-pip
+
+# Create the /opt directory and set permissions
+RUN mkdir -p /opt/config && chmod -R 755 /opt
+RUN mkdir -p /opt/program/cognixus-app/ && chmod -R 755 /opt
+RUN mkdir -p /opt/log/cognixus-app && chmod -R 755 /opt
+RUN mkdir -p /opt/sftp/in && chmod -R 755 /opt
+RUN mkdir -p /opt/sftp/out && chmod -R 755 /opt
+
+# Set the working directory
+WORKDIR /opt/program/cognixus-app/
+
+# Copy files from the host machine to the container
+COPY . .
+
+# Upgrade pip and setuptools
+RUN python3 -m pip install --upgrade pip setuptools
+
+# Expose port 3000 to the host machine (localhost)
+EXPOSE 3000
+
+# Install Python library dependencies from requirements.txt
+RUN python3 -m pip install -r requirements.txt
+
+# Make sure config file is in unix format
+RUN dos2unix cognixus_app.ini
+
+# Start the web service
+CMD ["bash", "serve_gunicorn.sh", "start"]
+# CMD ["/bin/bash"]

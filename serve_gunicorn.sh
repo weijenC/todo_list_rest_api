@@ -1,6 +1,6 @@
 #!/bin/bash
 # Hardcoded settings
-config_file="/opt/config/cognixus_app.ini"
+config_file="/opt/program/cognixus-app/cognixus_app.ini"
 python_path="/usr/bin/python3"
 gunicorn_path="/usr/local/bin/gunicorn"
 
@@ -14,8 +14,8 @@ timeout=$(sed -nr "/^\[starter\]/ { :l /^timeout[ ]*=/ { s/[^=]*=[ ]*//; p; q;};
 
 # Other setting
 log_date=$(date +%Y%m%d)
-nohup_folder=${home_dir}/nohup
-pid_folder=${home_dir}/proc
+nohup_folder="${home_dir}/nohup"
+pid_folder="${home_dir}/proc"
 
 # Command to check process status
 check_process=$(ps aux | grep "${gunicorn_path} server:app --bind ${ip_server}:${port_server}" | grep -v ' grep ' | wc -l)
@@ -65,3 +65,7 @@ case $1 in
     ;;
 esac
 
+# Keep the script running to prevent container exit
+while true; do
+    sleep 1
+done

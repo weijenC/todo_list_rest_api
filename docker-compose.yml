@@ -1,0 +1,39 @@
+version: '3'
+services:
+  mysql:
+    build:
+      context: /opt/program/cognixus-app/
+      dockerfile: Dockerfile-mysql
+    networks:
+      cognixus_network:
+        ipv4_address: 182.1.0.10
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword123#
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    container_name: cognixus-mysql-container
+
+  app:
+    build:
+      context: /opt/program/cognixus-app/
+      dockerfile: Dockerfile-app
+    networks:
+      cognixus_network:
+        ipv4_address: 182.1.0.11
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql
+    container_name: cognixus-app-container
+
+networks:
+  cognixus_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 182.1.0.1/16
+
+volumes:
+  mysql_data:

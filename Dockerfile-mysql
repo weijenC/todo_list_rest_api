@@ -1,0 +1,16 @@
+FROM mysql:latest
+
+# Set the environment variable to specify the MySQL root password (change it to your desired password)
+ENV MYSQL_ROOT_PASSWORD=rootpassword123#
+
+# Create a database named "cognixus"
+ENV MYSQL_DATABASE=cognixus
+
+# Expose port 3306 to the host machine (localhost)
+EXPOSE 3306
+
+# takes all the files located in the current directory and copies them into the image.
+WORKDIR /opt/program/cognixus/database/
+
+# Copy a SQL script to initialize the database and table
+COPY init.sql /docker-entrypoint-initdb.d/
