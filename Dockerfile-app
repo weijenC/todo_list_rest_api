@@ -21,11 +21,9 @@ RUN apt-get install -y python3
 RUN apt-get install -y python3-pip
 
 # Create the /opt directory and set permissions
-RUN mkdir -p /opt/config && chmod -R 755 /opt
-RUN mkdir -p /opt/program/cognixus-app/ && chmod -R 755 /opt
+RUN mkdir -p /opt/program/cognixus-app/nohup && chmod -R 755 /opt
+RUN mkdir -p /opt/program/cognixus-app/proc && chmod -R 755 /opt
 RUN mkdir -p /opt/log/cognixus-app && chmod -R 755 /opt
-RUN mkdir -p /opt/sftp/in && chmod -R 755 /opt
-RUN mkdir -p /opt/sftp/out && chmod -R 755 /opt
 
 # Set the working directory
 WORKDIR /opt/program/cognixus-app/
@@ -47,4 +45,4 @@ RUN dos2unix cognixus_app.ini
 
 # Start the web service
 CMD ["bash", "serve_gunicorn.sh", "start"]
-# CMD ["/bin/bash"]
+# CMD ["/bin/bash"]
