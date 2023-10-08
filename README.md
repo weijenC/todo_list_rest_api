@@ -1,5 +1,5 @@
-# cognixus_assessment
-This repo is soley for completing the home assessment provided by Cognixus Technologies Sdn Bhd as part of the interview process.
+# todo_list_rest_api
+This repo is to create REST API for to-do list app.
 
 
 ## Pending item to work on
